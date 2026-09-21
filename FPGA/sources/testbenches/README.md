@@ -14,9 +14,11 @@ folder (`RX_DDC_tb.v`, `TX_DUC_tb.v`, `IQModtb.sv`) are unchanged and still need
 | `unit/tb_*.v` | one test per module; first `// SOURCES:` line lists the design files |
 | `run_all.sh` | compiles and runs every test; a test passes if it prints `TEST PASS` |
 | `check_ip_copies.sh` | fails if a module copy inside `FPGA/IP/` differs from its master in `verilogmodules/` |
+| `prerelease_check.sh` | runs tests, IP copy check and lint; run before building a release |
 | `lint.sh` | Verilator `-Wall` lint of every module, compared with `lint_baseline.txt` |
 
 ```
+./prerelease_check.sh     # everything, before a release build
 ./run_all.sh              # all tests
 ./run_all.sh ddcmux       # tests whose name contains "ddcmux"
 ./lint.sh                 # fails if any module has more lint warnings than the baseline
