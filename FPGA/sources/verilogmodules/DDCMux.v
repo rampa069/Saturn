@@ -245,7 +245,7 @@ localparam muxillegal5 = 15;                     // illegal state
             fiforstn <= 0;
             enabledstate <= enidle;
             internalactive <= 0;
-            active=0;
+            active <= 0;
         end
         
         else                            // normal processing
