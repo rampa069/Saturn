@@ -6,7 +6,8 @@
 //                 - records depth+1 64 bit words of 4 consecutive ADC samples
 //                 - status register shows data available
 //                 - if the downstream stream is not ready, the loss must be flagged
-//                   (status bit 29, sticky until the next record starts)
+//                   (control register readback bit 31, sticky until the next record starts;
+//                   the status register can't be used: software takes bits 29:0 as the count)
 //                 - AXI-Lite protocol checked (RDATA stable under back-pressure)
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +73,9 @@ module tb_wideband_collect;
     bfm.write(16'h0000, 32'h1, ok);            // enable ADC0
     wait_available(30);
     check_eq("words recorded", words, 16);
-    check_eq("no loss flagged", d[29], 0);
+    bfm.read(16'h0000, d, ok);
+    check_eq("no loss flagged", d[31], 0);
+    check_eq("control readback", d[2:0], 3'b001);
     bfm.rready_delay = 4;
     bfm.read(16'h000C, d, ok);                 // status with back-pressure (fifo_count may move)
     bfm.rready_delay = 0;
@@ -91,7 +94,9 @@ module tb_wideband_collect;
     join
     wait_available(30);
     check_true("fewer than 16 words delivered while stalled", words < 16);
-    check_eq("loss flagged in status bit 29", d[29], 1);
+    check_eq("status count bits unaffected", d[29:14], 0);
+    bfm.read(16'h0000, d, ok);
+    check_eq("loss flagged in control bit 31", d[31], 1);
 
     // 3. next clean record clears the flag
     words = 0;
@@ -99,7 +104,8 @@ module tb_wideband_collect;
     repeat(50) @(posedge aclk);
     wait_available(30);
     check_eq("words recorded (3)", words, 16);
-    check_eq("loss flag cleared by new record", d[29], 0);
+    bfm.read(16'h0000, d, ok);
+    check_eq("loss flag cleared by new record", d[31], 0);
 
     finish_test(bfm.error_count + chk.error_count);
   end

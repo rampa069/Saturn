@@ -15,6 +15,8 @@
 //                 AXI4-Lite bus interface to processor 
 // Registers:
 //  addr 0         Control. R/W. Bit0=1: enable ADC0; bit1=1: enable ADC1 bit2: 1 to indicate data has been read
+//                 bit 31 (read only): 1 if words were lost in the last record because the output
+//                 stream was not ready (FIFO full). Cleared when the next record starts.
 //  addr 4         RecordPeriod. R/W.  Period in clock ticks between restart of recording 
 //  addr 8         Depth. R/W. Number of 64 bit words to be recorded into FIFO from one ADC, minus one
 //                 (to record 1024 words, write 1023)
@@ -22,8 +24,6 @@
 //	bit 13:0)  FIFO depth in 64 bit words. 
 //	bit 31	   ADC1 data ready. 1 if data available to read.
 //	Bit 30	   ADC0 data ready. 1 if data available to read.
-//	Bit 29	   1 if words were lost in the last record because the output stream
-//	           was not ready (FIFO full). Cleared when the next record starts.
 //
 // FIFO Interface signals:
 //	AXI stream:   	FIFO data to record
@@ -191,10 +191,10 @@ module Wideband_Collect #
       begin
         rvalidreg <= 1'b1;                                  // signal ready to complete data
         case (raddrreg[3:2])
-        0:  rdatareg <= controlreg;                        // concat data
+        0:  rdatareg <= {datalostreg, controlreg[30:0]};  // control, with lost data flag
         1:  rdatareg <= recordperiodreg;                        // concat data
         2:  rdatareg <= depthreg;                        // concat data
-        3:  rdatareg <= {dataavailablereg[1:0], datalostreg, fifo_count[28:0]};          // concat data
+        3:  rdatareg <= {dataavailablereg[1:0], fifo_count[29:0]};                        // concat data
         endcase
       end
 // read step 4. When rvalid and rready, terminate the transaction.
