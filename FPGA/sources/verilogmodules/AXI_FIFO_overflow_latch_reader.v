@@ -27,7 +27,7 @@
 //
 // addr 4          ADC1 peak amplitude value (16 bit unsigned)
 // addr 8          ADC2 peak amplitude value (16 bit unsigned)
-// addr C          ADC2 peak amplitude value (16 bit unsigned)
+// addr C          ADC2 peak amplitude value (duplicate of addr 8)
 
 
 //

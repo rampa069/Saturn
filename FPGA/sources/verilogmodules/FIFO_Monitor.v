@@ -24,9 +24,9 @@
 //     bits 29-31 Cleared by read.
 //
 //  addr 10         Control register 1 (read/write, with no read side effect)
-//  addr 14         Control register 1 (read/write, with no read side effect)
-//  addr 18         Control register 1 (read/write, with no read side effect)
-//  addr 1C         Control register 1 (read/write, with no read side effect)
+//  addr 14         Control register 2 (read/write, with no read side effect)
+//  addr 18         Control register 3 (read/write, with no read side effect)
+//  addr 1C         Control register 4 (read/write, with no read side effect)
 //     bit(15:0)   Threshold FIFO depth
 //     bit 31      Interrupt enable
 //

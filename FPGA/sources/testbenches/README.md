@@ -13,6 +13,7 @@ folder (`RX_DDC_tb.v`, `TX_DUC_tb.v`, `IQModtb.sv`) are unchanged and still need
 | `common/tb_helpers.vh` | `check_eq`, `check_true`, `finish_test` |
 | `unit/tb_*.v` | one test per module; first `// SOURCES:` line lists the design files |
 | `run_all.sh` | compiles and runs every test; a test passes if it prints `TEST PASS` |
+| `check_ip_copies.sh` | fails if a module copy inside `FPGA/IP/` differs from its master in `verilogmodules/` |
 | `lint.sh` | Verilator `-Wall` lint of every module, compared with `lint_baseline.txt` |
 
 ```
@@ -20,6 +21,7 @@ folder (`RX_DDC_tb.v`, `TX_DUC_tb.v`, `IQModtb.sv`) are unchanged and still need
 ./run_all.sh ddcmux       # tests whose name contains "ddcmux"
 ./lint.sh                 # fails if any module has more lint warnings than the baseline
 ./lint.sh --update        # accept the current warning counts as the new baseline
+./check_ip_copies.sh      # IP project copies identical to verilogmodules/
 ```
 
 Requirements: Icarus Verilog 12+ (`iverilog`, `vvp`), Verilator 5 (lint only).

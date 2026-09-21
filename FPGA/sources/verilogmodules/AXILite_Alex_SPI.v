@@ -16,7 +16,7 @@
 // Registers:
 //  addr 0         TX filter & RX antenna Data (bits 15:0)
 //  addr 4         RX data (bits 31:0)
-//  addr 8:        TX filter & TX antenna data (bits 156:0)
+//  addr 8:        TX filter & TX antenna data (bits 15:0)
 
 // Revision:
 // Revision 0.01 - File Created

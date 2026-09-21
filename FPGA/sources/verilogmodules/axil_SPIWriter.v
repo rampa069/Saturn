@@ -12,8 +12,8 @@
 
 // Registers:
 // note this is true even if the axi-lite bus is wider!
-//  addr 0         SPI write data [31:0]        R/W
-//  addr 4         SPI read data [63:32]        read only
+//  addr 0         SPI write data [15:0]        R/W
+//  addr 4         SPI read data [15:0]         read only
 //  addr 8         bit 0: 1 if busy             read only
 //
 // write transfers will stall if a shift is in progress, so consecutive writes are OK
