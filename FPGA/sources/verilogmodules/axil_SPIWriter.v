@@ -15,6 +15,7 @@
 //  addr 0         SPI write data [15:0]        R/W
 //  addr 4         SPI read data [15:0]         read only
 //  addr 8         bit 0: 1 if busy             read only
+//  writes to addresses other than 0 are acknowledged and ignored
 //
 // write transfers will stall if a shift is in progress, so consecutive writes are OK
 // read transfers are not stalled. Before reaging SPI read data (0x04)
@@ -187,7 +188,7 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
         else if(raddrreg[3:2]==2'b01)                       // read back reg 1
           rdatareg <= {16'b0, SPIInWord};
         else
-          rdatareg <= {{(AXI_DATA_WIDTH-1){1'b0}}, SPIBusy};
+          rdatareg <= {{(AXI_DATA_WIDTH-1){1'b0}}, (SPIBusy | SPIValid_0)};   // busy from write until shift done
       end
 // read step 4. When rvalid and rready, terminate the transaction & clear data.
       if(rvalidreg & s_axi_rready)
@@ -230,11 +231,14 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
         awreadyreg <= 1'b1;                                 // and reassert the readys
 //        wreadyreg <= 1'b1;                                // NOT reasserting this yet
         wcompleted <= 1'b0;                                 // ready for next cycle
-        if(waddrreg[2]==0)
+        if(waddrreg[3:2]==2'b00)                            // SPI data register: start a shift
         begin
           config_reg0 <= wdatareg;
-          SPIValid_0 <= 1;
+          SPIValid_0 <= 1;                                  // wready re-asserted when shift completes
         end
+        else
+          wreadyreg <= 1'b1;                                // read only / unused address: nothing
+                                                            // to shift so ready immediately
       end 
     end         // if(!aresetn)
   end           // always @
