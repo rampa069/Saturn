@@ -9,7 +9,7 @@ cd "$(dirname "$0")" || exit 1
 MODDIR=../verilogmodules
 OUT=$(mktemp)
 for f in "$MODDIR"/*.v; do
-    top=$(grep -m1 -oE '^\s*module\s+[A-Za-z_0-9]+' "$f" | awk '{print $2}')
+    top=$(grep -a -m1 -oE '^\s*module\s+[A-Za-z_0-9]+' "$f" | awk '{print $2}')
     n=$(verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-MULTITOP -Wno-PROCASSINIT --top-module "$top" "$f" 2>&1 \
         | grep -cE '^%(Warning|Error)')
     printf "%-40s %s\n" "$(basename "$f")" "$n" >> "$OUT"
