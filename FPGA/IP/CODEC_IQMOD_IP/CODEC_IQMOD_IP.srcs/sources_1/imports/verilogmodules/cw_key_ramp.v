@@ -174,12 +174,12 @@ begin
                     ramp_state <= 2;
                 else
                 begin
-                    millis_count = MILLISEC_COUNT;
-                    delay_count = delay_count - 1;          // decrement counter if not all done
+                    millis_count <= MILLISEC_COUNT;
+                    delay_count <= delay_count - 1;          // decrement counter if not all done
                 end
             end
             else
-                millis_count = millis_count - 1;            // decrement milisecond counter
+                millis_count <= millis_count - 1;            // decrement milisecond counter
         end
 
 
@@ -222,12 +222,12 @@ begin
                     ramp_state <= 4;
                 else
                 begin
-                    delay_count = delay_count - 1;          // decrement counter if not all done
-                    millis_count = MILLISEC_COUNT;
+                    delay_count <= delay_count - 1;          // decrement counter if not all done
+                    millis_count <= MILLISEC_COUNT;
                 end
             end
             else
-                millis_count = millis_count - 1;            // decrement milisecond counter
+                millis_count <= millis_count - 1;            // decrement milisecond counter
         end
 
 //
@@ -281,12 +281,12 @@ begin
                         ramp_state <= 0;
                     else
                     begin
-                        delay_count = delay_count - 1;          // decrement counter if not all done
-                        millis_count = MILLISEC_COUNT;
+                        delay_count <= delay_count - 1;          // decrement counter if not all done
+                        millis_count <= MILLISEC_COUNT;
                     end
                 end
                 else
-                    millis_count = millis_count - 1;            // decrement milisecond counter
+                    millis_count <= millis_count - 1;            // decrement milisecond counter
             end
 
         end

@@ -1,7 +1,7 @@
 activitywatchdog.v                       3
 Attenuator.v                             3
 AXI_FIFO_overflow_latch_reader.v         4
-axi_spi_adc.v                            26
+axi_spi_adc.v                            21
 axi_stream_deinterleaver.v               2
 axi_stream_resizer_64to48.v              3
 axil_config256_reg.v                     4
@@ -18,13 +18,13 @@ axis_variable.v                          0
 byteswap_32bit.v                         0
 byteswap_48bit.v                         0
 byteswap_64bit.v                         0
-clock-monitor.v                          11
+clock-monitor.v                          6
 clockdivider.v                           4
 cvt_offsetbinary.v                       0
-cw_key_ramp.v                            19
+cw_key_ramp.v                            10
 d-register.v                             0
-DDCMux.v                                 4
-debounce.v                               3
+DDCMux.v                                 3
+debounce.v                               4
 double_register.v                        0
 FIFO_Monitor.v                           32
 i2s_clk_lrclk_gen.v                      6
@@ -33,7 +33,7 @@ I2S_xmit.v                               4
 iambic.v                                 8
 lfsr.v                                   2
 ltc2208_derand.v                         0
-PTTATUGate.v                             2
+PTTATUGate.v                             0
 pwm_dac.v                                2
 reg_to_axis.v                            2
 register.v                               0

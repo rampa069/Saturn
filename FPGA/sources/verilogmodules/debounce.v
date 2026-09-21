@@ -13,20 +13,27 @@
 // modified Laurence Barker G8NJJ to make the time clearer
 // and to add "clock enable" input
 
-module debounce(aclk, ce_n, pb_in, clean_pb, clean_pbn);
+module debounce #
+(
+    parameter debounce_count = 1024,
+// power-up state: the input is assumed to be at its idle level until it has been seen
+// stable at the other level for the debounce time. Saturn inputs are active low with
+// pull-ups (idle 1), so by default an active low key does not read as pressed at power-up.
+    parameter INITIAL_LEVEL = 1'b1
+)
+(aclk, ce_n, pb_in, clean_pb, clean_pbn);
 	
-    output reg clean_pb = 0;    // debounced output
-    output reg clean_pbn = 1;    // debounced output, inverted
+    output reg clean_pb = INITIAL_LEVEL;     // debounced output
+    output reg clean_pbn = !INITIAL_LEVEL;   // debounced output, inverted
     input wire pb_in;           // bouncy, asynchronous input	
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 ACLK CLK" *)
     input wire aclk;             // clock signal
     input wire ce_n;            // active low clock enable
 	
-parameter debounce_count = 1024;
 localparam NumBits = clogb2 (debounce_count -1); // 0 to (Divisor -1)
 
-reg [NumBits-1:0] count;
-reg [3:0] pb_history = 0;
+reg [NumBits-1:0] count = debounce_count-1;
+reg [3:0] pb_history = {4{INITIAL_LEVEL}};
 
 always @ (posedge aclk)
 if(!ce_n)
