@@ -167,6 +167,7 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
       bvalidreg <= 1'b0;                // initialise to "not ready to complete"
       SPIValid_0 <= 0;                  // no data in register 0
       wcompleted <= 1'b0;               // no write complete yet
+      ClearValidReg <= 1'b0;
     end
     else
     begin
@@ -291,6 +292,7 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
         if(!aresetn)                // reset condition
         begin
             SPILoad <= 1;
+            SPICk <= 0;
             shiftreg <= 0;
             shiftinreg <= 0;
             SPIInWord <= 0;
