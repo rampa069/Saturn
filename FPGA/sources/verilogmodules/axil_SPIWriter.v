@@ -107,6 +107,15 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
   reg ClearValid;                           // true when valid input should be cleared
   reg [15:0] SPICount;                      // counter
 
+// 2 flip flop synchroniser for the asynchronous serial input.
+// the 2 clock delay is well inside the time the input bit is stable before it is sampled
+  (* ASYNC_REG = "TRUE" *) reg SPIMISO_meta = 0, SPIMISO_sync = 0;
+  always @(posedge aclk)
+  begin
+    SPIMISO_meta <= SPIMISO;
+    SPIMISO_sync <= SPIMISO_meta;
+  end
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // this design is in two halves: Axilite register interface, and SPI shifter.
@@ -180,7 +189,7 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
         raddrreg <= s_axi_araddr;            // latch read address
       end
 // read step 3. assert rvalid & data when address is complete
-      if(!arreadyreg)         // address complete
+      if(!arreadyreg & !rvalidreg)         // address complete
       begin
         rvalidreg <= 1'b1;                                  // signal ready to complete data
         if(raddrreg[3:2]==2'b00)                            // read back reg 0
@@ -322,7 +331,7 @@ localparam CKDIVWIDTH = clogb2(SPI_CLOCK_DIVIDE);  // number of bits to hold clo
             3:  begin                                   // clock low state
                     SPIState <= 4;                      // next state always state 4
                     SPICk <= 0;
-                    shiftinreg[0] <= SPIMISO;           // add in new data bit
+                    shiftinreg[0] <= SPIMISO_sync;           // add in new data bit
                 end
 
             // End of clock cycle. if counter == 0, assert ClearValid & move on else next lap

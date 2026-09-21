@@ -346,7 +346,7 @@ module AXILite_Alex_SPI #
         raddrreg <= s_axi_araddr;            // latch read address
       end
 // read step 3. assert rvalid & data when address is complete
-      if(!arreadyreg)         // address complete
+      if(!arreadyreg & !rvalidreg)         // address complete
       begin
         rvalidreg <= 1'b1;                                  // signal ready to complete data
 
