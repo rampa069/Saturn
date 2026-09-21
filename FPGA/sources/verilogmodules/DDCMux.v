@@ -56,7 +56,8 @@
 
 module AXIS_DDC_Multiplexer #
 (
-  parameter AXIS_INPUT_SIZE = 48,         // input bus width
+  parameter AXIS_INPUT_SIZE = 48,         // input bus width. Must be 48: the output word format is
+                                          // 16 bit header + 48 bit I/Q sample
   parameter SHUTDOWN_TIMEOUT = 16384      // clocks to wait for a DDC sample while shutting down
                                           // (48KHz sample period = 2560 clocks at 122.88MHz)
 )
