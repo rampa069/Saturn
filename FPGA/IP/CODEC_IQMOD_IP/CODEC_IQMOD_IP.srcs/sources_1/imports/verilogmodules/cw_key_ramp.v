@@ -55,7 +55,7 @@ module cw_key_ramp
 (
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 ACLK CLK" *)
 (* X_INTERFACE_PARAMETER = "ASSOCIATED_RESET aresetn" *)
-    input wire aclk,                    // 12.288MHz clock (CODEC MCLK)
+    input wire aclk,                    // 122.88MHz clock
 (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 aresetn RST" *)
 (* X_INTERFACE_PARAMETER = "POLARITY ACTIVE_LOW" *)
     input wire aresetn,                   // asynch reset

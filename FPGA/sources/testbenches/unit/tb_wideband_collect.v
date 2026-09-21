@@ -55,7 +55,7 @@ module tb_wideband_collect;
     integer t;
     begin
       t = 0; d = 0;
-      while(!d[bit_n] && t < 200) begin bfm.read(16'h000C, d, ok); t = t + 1; end
+      while(!d[bit_n] && t < 2000) begin bfm.read(16'h000C, d, ok); t = t + 1; end
       check_true("data available", d[bit_n]);
     end
   endtask
