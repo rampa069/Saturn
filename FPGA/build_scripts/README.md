@@ -5,6 +5,7 @@ Batch mode alternative to the GUI build procedure in `FPGA/README.md`.
 | Script | Does |
 |---|---|
 | `build_saturn.tcl` | Full build: refresh module references, validate every block design, create the HDL wrapper, synthesis, implementation, bitstream, timing/utilisation/DRC reports and the primary PROM `.bin` (SPIx1, s25fl256s, address 0, as described in `FPGA/documentation/Generating Configuration PROM file.docx`). |
+| `replace_try.tcl` | Timing closure fallback: re-place and re-route an `opt_design` checkpoint with several placer directives, stop at the first that meets timing, write bitstream and `.bin`. |
 | `build_stage2.tcl` | Same flow from the HDL wrapper onwards, without opening block designs. Use it after a `build_saturn.tcl` run that already refreshed and saved the block designs. |
 
 ```

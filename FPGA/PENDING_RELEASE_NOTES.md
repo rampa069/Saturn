@@ -8,10 +8,10 @@ Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … 
 | Step | Status |
 |---|---|
 | RTL unit tests (`FPGA/sources/testbenches/prerelease_check.sh`) | 21/21 pass (V27 RTL: 4/21, see matrix below) |
-| Vivado 2023.1 build | Done on 2026-09-22 with `FPGA/build_scripts` (~3 h, 2 jobs) |
-| Timing | All constraints met: WNS +0.145 ns, WHS +0.049 ns, 0 failing endpoints |
+| Vivado 2023.1 build | Done on 2026-09-22 with `FPGA/build_scripts` (~3 h, 2 jobs); V28 needed a re-place (see below) |
+| Timing | All constraints met: WNS +0.055 ns, WHS +0.049 ns, 0 failing endpoints |
 | Utilisation | LUT 40.4 %, FF 32.7 %, BRAM 74.8 % |
-| DRC | 0 errors; warnings/advisories only (DSP pipelining, BRAM async control) |
+| DRC | 0 errors; 9 warnings, 3 advisories (DSP pipelining, BRAM async control) |
 | Primary image | `saturnprimary_candidate.bin`, 9 730 652 bytes, SPIx1 at 0x0 (same size/format as V27) |
 | Firmware version constant | **28** (`xlconstant_swversion`), rebuilt 2026-09-22 |
 | Hardware test | **not done** |
@@ -145,6 +145,15 @@ on both images; the others show the expected difference.
 If everything passes: add the README entry below and publish the `.bin` as `saturnprimary2026V28.bin`.
 
 ## Vivado notes
+
+- **Timing margin is small.** The first build (version 27 constant) met timing with WNS +0.145 ns. After
+  changing only the version constant to 28, the project strategy (`Performance_ExplorePostRoutePhysOpt`)
+  gave WNS -0.306 ns: 9 endpoints of the Xilinx XDMA PCIe core, `gt_rx_valid_filter[0]/gt_rxvalid_q_reg`
+  at 250 MHz (`clk_250mhz_mux_x0y0`), 73 % routing delay, i.e. a placement effect, not the new RTL.
+  Post-route `phys_opt_design`/`route_design -directive AggressiveExplore` only reached -0.300 ns.
+  Re-placing from the `opt_design` checkpoint with `place_design -directive ExtraNetDelay_high`
+  (`FPGA/build_scripts/replace_try.tcl`) met timing: WNS +0.055 ns. If a future build fails the same way,
+  run that script on `saturn_top_wrapper_opt.dcp` instead of rebuilding.
 
 - `FPGA/build_scripts/README.md`: command line build, Debian 13 workarounds.
 - Module reference changes that need attention when opening the project in the GUI:
