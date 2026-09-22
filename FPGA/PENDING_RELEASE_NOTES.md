@@ -13,7 +13,7 @@ Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … 
 | Utilisation | LUT 40.4 %, FF 32.7 %, BRAM 74.8 % |
 | DRC | 0 errors; warnings/advisories only (DSP pipelining, BRAM async control) |
 | Primary image | `saturnprimary_candidate.bin`, 9 730 652 bytes, SPIx1 at 0x0 (same size/format as V27) |
-| Firmware version constant | **still 27** (`xlconstant_swversion` not changed yet) |
+| Firmware version constant | **28** (`xlconstant_swversion`), rebuilt 2026-09-22 |
 | Hardware test | **not done** |
 
 ## Changelog (relative to V27)
@@ -122,7 +122,7 @@ on both images; the others show the expected difference.
 | # | Test | How | Expected V27 | Expected candidate | V27 | Candidate |
 |---|---|---|---|---|---|---|
 | H1 | Power-up | power on, watch relays/PTT LED; clock LED | no TX, LED blinks | same | | |
-| H2 | Version | `FPGAVersion` on the Pi | 27 | 27 (constant not changed yet) | | |
+| H2 | Version | `FPGAVersion` on the Pi | 27 | 28 | | |
 | H3 | Basic RX/TX | Thetis RX all bands, SSB TX | works | same | | |
 | H4 | Long run | RX (and some TX) for >= 1 h, watch p2app console | no FIFO errors | same | | |
 | H5 | RX rates | switch 48k..1536k, several receivers | works | same | | |
@@ -142,8 +142,7 @@ on both images; the others show the expected difference.
 | H19 | ADC overload | attenuator 0 dB, strong signal | overload shown, peak level | same | | |
 | H20 | Codec audio | mic in, speaker out | works | same | | |
 
-If everything passes: set `xlconstant_swversion` to 28 in `saturn_top.bd`, rebuild, repeat H1-H4 and H15,
-and add the README entry below.
+If everything passes: add the README entry below and publish the `.bin` as `saturnprimary2026V28.bin`.
 
 ## Vivado notes
 
