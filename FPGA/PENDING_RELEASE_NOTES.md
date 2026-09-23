@@ -1,7 +1,6 @@
 # Pending FPGA release (V28 candidate)
 
-Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … `fix/fpga-phase-6`
-(execution notes and deviations from the plan: `plan.md`).
+Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … `fix/fpga-phase-6`.
 
 ## Status
 
