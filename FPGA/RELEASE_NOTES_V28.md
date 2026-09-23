@@ -1,4 +1,4 @@
-# Pending FPGA release (V28 candidate)
+# FPGA release V28
 
 Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … `fix/fpga-phase-6`.
 
@@ -11,9 +11,9 @@ Changes from the September 2026 Verilog review, branches `fix/fpga-phase-1` … 
 | Timing | All constraints met: WNS +0.055 ns, WHS +0.049 ns, 0 failing endpoints |
 | Utilisation | LUT 40.4 %, FF 32.7 %, BRAM 74.8 % |
 | DRC | 0 errors; 9 warnings, 3 advisories (DSP pipelining, BRAM async control) |
-| Primary image | `saturnprimary_candidate.bin`, 9 730 652 bytes, SPIx1 at 0x0 (same size/format as V27) |
+| Primary image | published as `FPGA/saturnprimary2026V28.bin`, 9 730 652 bytes, SPIx1 at 0x0 (same size/format as V27), sha256 `ba29d671...69d758` |
 | Firmware version constant | **28** (`xlconstant_swversion`), rebuilt 2026-09-22 |
-| Hardware test | **not done** |
+| Hardware test | Done: confirmed working on an ANAN G2 Ultra by Apache Labs |
 
 ## Changelog (relative to V27)
 
@@ -141,7 +141,8 @@ on both images; the others show the expected difference.
 | H19 | ADC overload | attenuator 0 dB, strong signal | overload shown, peak level | same | | |
 | H20 | Codec audio | mic in, speaker out | works | same | | |
 
-If everything passes: add the README entry below and publish the `.bin` as `saturnprimary2026V28.bin`.
+The image built from these sources was tested by Apache Labs on an ANAN G2 Ultra and works correctly.
+The version history entry is in `FPGA/README.md` and the image is published as `FPGA/saturnprimary2026V28.bin`.
 
 ## Vivado notes
 
@@ -170,13 +171,3 @@ If everything passes: add the README entry below and publish the `.bin` as `satu
 | FIFO monitor thresholds | threshold 0 = no threshold (software always sets the FIFO depth) |
 | ADC overflow 0x5000 | reading 0x4/0x8 no longer clears overflow bits; 0x4/0x8 upper 16 bits always 0 |
 | Read-only register blocks | writes acknowledged (OKAY) and ignored instead of hanging |
-
-## README entry (draft)
-
-V28. dd/mm/2026. Fixes from a Verilog review: codec SPI and several AXI-Lite registers no longer hang the
-bus on stray writes; TX I/Q can't get stuck on the envelope output after EER is turned off; no lost FIFO/ADC
-overflow flags; ADC peak -32768 fixed; Alex TX word bits 31:16 no longer cause endless SPI shifting and the
-reset shift uses the normal SPI clock; iambic keyer dash length at high weight and speed 0 fixed, IO8 keys in
-straight mode; 60 s CW key down limit; keys no longer read as pressed at power-up; PWM drive 0 = no output;
-saturating sidetone arithmetic; DMA write response fix; RX DDC mux can always shut down; wideband lost-data
-flag (control register bit 31).
